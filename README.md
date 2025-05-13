@@ -18,10 +18,11 @@ This is a **journaling app**. Intended features of MVP include:
 ---
 
 ## **Contribution Rules**
-Features and Changes needed are found under the **Issues Tab**
+Features and Changes needed are found under the **Issues Tab**.  
 To make a change as a contributor:
-- Create a branch and check it out
-- Commit changes to the branch
+- Select the issue that you want to address and assign it to yourself
+- Create a branch, name it after the issue, and check it out
+- Commit changes to the branch, with the commit message preferably having the name of the branch/issue in it
 - Once you want the changes to be added to the main branch, push your code and make a pull request
 - Pull Requests will only require 1 approval
 ---
