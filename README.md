@@ -18,6 +18,7 @@ This is a **journaling app**. Intended features of MVP include:
 ---
 
 ## **Contribution Rules**
+Features and Changes needed are found under the **Issues Tab**
 To make a change as a contributor:
 - Create a branch and check it out
 - Commit changes to the branch
