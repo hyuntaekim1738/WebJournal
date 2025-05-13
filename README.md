@@ -17,6 +17,13 @@ This is a **journaling app**. Intended features of MVP include:
 | **APIs** | Spotify webAPI  |
 ---
 
+## **Contribution Rules**
+To make a change as a contributor:
+- Create a branch and check it out
+- Commit changes to the branch
+- Once you want the changes to be added to the main branch, push your code and make a pull request
+- Pull Requests will only require 1 approval
+---
 ## **Future ideas**
 - Integrating LLM to label and color code the mood of daily entries
 - Having a conversation mode: allowing users to make entries by having a conversation with the LLM and having the LLM either synthesize an entry from the conversation or directly save the conversation as an entry.
