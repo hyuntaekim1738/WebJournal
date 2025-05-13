@@ -1,14 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Share_Tech } from "next/font/google";
 import "./globals.css";
+import NavBar from "./components/NavBar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const shareTech = Share_Tech({
+  variable: "--font-share-tech",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "400",
+  display: 'swap'
 });
 
 export const metadata = {
@@ -20,9 +18,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${shareTech.variable} antialiased`}
       >
-        {children}
+        <NavBar />
+        <div className="p-6">
+          {children}
+        </div>
       </body>
     </html>
   );
