@@ -21,9 +21,9 @@ export default function RootLayout({ children }) {
         className={`${shareTech.variable} antialiased`}
       >
         <NavBar />
-        <div className="p-6">
+        <main className="pt-20">
           {children}
-        </div>
+        </main>
       </body>
     </html>
   );

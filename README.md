@@ -19,10 +19,12 @@ This is a **journaling app**. Intended features of MVP include:
 
 ## **Contribution Rules**
 Features and Changes needed are found under the **Issues Tab**.  
+Each issue's title is of the format: [x]-Issue description, where x+1 is the order in which an issue should be implemented. IE: Issue 0 should be first to be implemented, issue 1 should be 2nd, and so on. Some issues can be completed in parallel, which requires your judgment to decide.  
 To make a change as a contributor:
 - Select the issue that you want to address and assign it to yourself
 - Create a branch, name it after the issue, and check it out
-- Commit changes to the branch, with the commit message preferably having the name of the branch/issue in it
+- Commit changes to the branch
+    - For the commit message, style it like this: [issue#] - how much progress you made/what you made progress on
 - Once you want the changes to be added to the main branch, push your code and make a pull request
 - Pull Requests will only require 1 approval
 ---
