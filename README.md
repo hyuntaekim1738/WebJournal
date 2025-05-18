@@ -6,7 +6,7 @@ This is a **journaling app**. Intended features of MVP include:
 - Reviewing past entries.
 - Allowing Photo Uploads.
 - Having Spotify songs linked to your entries that describe your day.
-
+Details of app setup are located in the README of the web-journal directory.
 ---
 
 ## **Tech Stack**
@@ -27,6 +27,7 @@ To make a change as a contributor:
     - For the commit message, style it like this: [issue#] - how much progress you made/what you made progress on
 - Once you want the changes to be added to the main branch, push your code and make a pull request
 - Pull Requests will only require 1 approval
+- Once the PR is approved, go to the issue tab and mark the issue as completed
 ---
 ## **Future ideas**
 - Integrating LLM to label and color code the mood of daily entries
