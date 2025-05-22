@@ -1,7 +1,12 @@
-export default function GoogleButton({children}) {
+'use client';
+
+import { signIn } from "next-auth/react";
+
+export default function GoogleButton({ children }) {
     return (
         <button
             type="button"
+            onClick={() => signIn("google", { callbackUrl: "/home" })}
             className="my-6 w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white p-3 text-gray-700 hover:bg-gray-100 transition"
         >
             <svg

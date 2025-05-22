@@ -1,6 +1,19 @@
+'use client';
+
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session) {
+      router.push('/home');
+    }
+  }, [session, router]);
+
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center text-center px-4">
       <div className="flex flex-col items-center gap-y-6 max-w-xl">

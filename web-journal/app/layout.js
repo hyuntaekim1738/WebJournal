@@ -1,6 +1,7 @@
 import { Share_Tech } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/NavBar";
+import Providers from "./providers";
 
 const shareTech = Share_Tech({
   variable: "--font-share-tech",
@@ -20,10 +21,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${shareTech.variable} antialiased`}
       >
-        <NavBar />
-        <main className="pt-20">
-          {children}
-        </main>
+        <Providers>
+          <NavBar />
+          <main className="pt-20">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
