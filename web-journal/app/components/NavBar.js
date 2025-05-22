@@ -21,7 +21,7 @@ export default function NavBar() {
             {session ? (
               <>
                 <Link
-                  href="/journal"
+                  href="/home"
                   className="sm:text-xs lg:text-lg hover:text-blue-500 transition duration-150"
                 >
                   Journal
