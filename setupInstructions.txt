@@ -1,0 +1,26 @@
+Follow these instructions to begin collaborating.
+1. Once you have shared GitHub, google, and MongoDB accounts, clone the repo
+2. Run command " cd web-journal "
+3. Run " npm install "
+4. Run command " touch .env.local "
+5. Open the .env.local file and copy/paste the 5 lines below into the file
+MONGODB_URI=
+GOOGLE_ID=
+GOOGLE_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
+6. Go to MongoDB Atlas and navigate to the project "WebJournal".
+    On the side there should be a tab that says "Database Access".
+    Click "Add New Database User" and come up with a username, password, and role.
+    Then go to the "Clusters" tab, select the "Connect" button, select the 
+    "Drivers" option, and copy paste the connection string into the .env.local file
+    at MONGODB_URI=<connection_string>. Replace the <db_username>:<db_password> in the string
+    with the user that you just made for yourself.
+7. Go to console.cloud.google.com, select the "WebJournal" project, and search "OAuth". 
+    Select the option that says "Credentials". Under "OAuth 2.0 Client IDs", click "Web client 1".
+    Under the "Additional Information" pane, copy paste the Client ID into GOOGLE_ID=<client_id> on .env.local,
+    copy paste the client secret into GOOGLE_SECRET=<client_secret>.
+8. Run command " openssl rand -base64 32 ". Copy paste the terminal output into the .env.local file 
+    in NEXTAUTH_SECRET=<output>.
+9. Make sure you are in the web-journal directory. Run " npm run dev ".
+
