@@ -6,13 +6,13 @@ This is a **journaling app**. Intended features of MVP include:
 - Reviewing past entries.
 - Allowing Photo Uploads.
 - Having Spotify songs linked to your entries that describe your day.
-Details of app setup are located in the README of the web-journal directory.
 ---
 
 ## **Tech Stack**
 | Feature | Technology |
 |------------|--------------|
 | **Frontend** | Next.js, Tailwind CSS |
+| **Auth** | NextAuth, Google OAuth |
 | **Backend** | MongoDB  |
 | **APIs** | Spotify webAPI  |
 ---
