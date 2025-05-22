@@ -23,4 +23,4 @@ NEXTAUTH_SECRET=
 8. Run command " openssl rand -base64 32 ". Copy paste the terminal output into the .env.local file 
     in NEXTAUTH_SECRET=<output>.
 9. Make sure you are in the web-journal directory. Run " npm run dev ".
-
+10. Go to GitHub, assign to yourself the issue you'd like to work on, create and checkout the corresponding branch, and code.
