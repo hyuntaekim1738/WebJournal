@@ -13,7 +13,7 @@ This is a **journaling app**. Intended features of MVP include:
 |------------|--------------|
 | **Frontend** | Next.js, Tailwind CSS |
 | **Auth** | NextAuth, Google OAuth |
-| **Backend** | MongoDB  |
+| **Backend** | MongoDB, Google Cloud |
 | **APIs** | Spotify webAPI  |
 ---
 

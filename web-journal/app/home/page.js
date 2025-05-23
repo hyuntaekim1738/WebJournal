@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import NewEntryModal from '../components/NewEntryModal';
 
 export default function HomePage() {
   const filterOptions = ['Week', 'Month', 'Year', 'All'];
   const [filter, setFilter] = useState('Week');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const entries = []; // this is a placeholder
 
@@ -30,10 +32,18 @@ export default function HomePage() {
     <main className="max-w-3xl mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">My Journal</h1>
-        <button className="bg-blue-500 px-4 py-2 rounded-xl hover:bg-blue-700">
+        <button 
+          className="bg-blue-500 px-4 py-2 rounded-xl hover:bg-blue-700"
+          onClick={() => setIsModalOpen(true)}
+        >
           Write New Entry
         </button>
       </div>
+
+      <NewEntryModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
 
       <div className="flex flex-wrap gap-2">
         {filterOptions.map(option => (
