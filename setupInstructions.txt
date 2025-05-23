@@ -11,6 +11,9 @@ NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=
 NEXT_PUBLIC_SPOTIFY_CLIENT_ID=
 NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET=
+GOOGLE_CLOUD_PROJECT_ID=
+GOOGLE_CLOUD_BUCKET_NAME=
+GOOGLE_CLOUD_CREDENTIALS=
 6. Go to MongoDB Atlas and navigate to the project "WebJournal".
     On the side there should be a tab that says "Database Access".
     Click "Add New Database User" and come up with a username, password, and role.
@@ -22,9 +25,18 @@ NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET=
     Select the option that says "Credentials". Under "OAuth 2.0 Client IDs", click "Web client 1".
     Under the "Additional Information" pane, copy paste the Client ID into GOOGLE_ID=<client_id> on .env.local,
     copy paste the client secret into GOOGLE_SECRET=<client_secret>.
-8. Run command " openssl rand -base64 32 ". Copy paste the terminal output into the .env.local file 
+8. Create a Service Account Key
+    - On google cloud console, navigate to IAM & Admin > Service Accounts
+    - Locate or create a service account (e.g., `entry-uploader`)
+    - Click "Keys" > "Add Key" > "Create new key"
+    - Select JSON, click Create, and save the file somewhere safe
+    - Copy paste the JSON file into GOOGLE_CLOUD_CREDENTIALS=<json_file_output>, make sure that the 
+        output of the file is all consolidated into ONE LINE 
+9. Copy paste the google cloud porject ID into GOOGLE_CLOUD_PROJECT_ID=<project_id>
+10. Navigate to storage on google cloud, select the bucket and copy paste its name into GOOGLE_CLOUD_BUCKET_NAME=<bucket_name>
+11. Run command " openssl rand -base64 32 ". Copy paste the terminal output into the .env.local file 
     in NEXTAUTH_SECRET=<output>.
-9. Go to spotify development, select webJournal and copy paste the client ID and client secret into corresponding fields 
+12. Go to spotify development, select webJournal and copy paste the client ID and client secret into corresponding fields 
     of .env.local
-9. Make sure you are in the web-journal directory. Run " npm run dev ".
-10. Go to GitHub, assign to yourself the issue you'd like to work on, create and checkout the corresponding branch, and code.
+13. Make sure you are in the web-journal directory. Run " npm run dev ".
+14. Go to GitHub, assign to yourself the issue you'd like to work on, create and checkout the corresponding branch, and code.

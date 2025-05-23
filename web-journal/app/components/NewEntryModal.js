@@ -12,16 +12,50 @@ export default function NewEntryModal({ isOpen, onClose }) {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedTrack, setSelectedTrack] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
 
     const handlePhotoUpload = (e) => {
         const files = Array.from(e.target.files);
         setPhotos(prev => [...prev, ...files]);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({ title, content, photos, spotifyUrl });
-        onClose();
+        setIsSubmitting(true);
+        setError(null);
+
+        try {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('spotifyUrl', spotifyUrl);
+            photos.forEach(photo => {
+                formData.append('photos', photo);
+            });
+
+            const response = await fetch('/api/entries', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.error || 'Failed to create entry');
+            }
+            setTitle('');
+            setContent('');
+            setPhotos([]);
+            setSpotifyUrl('');
+            setSelectedTrack(null);
+            onClose();
+        } catch (error) {
+            console.error('Error submitting entry:', error);
+            setError(error.message);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     useEffect(() => {
@@ -65,6 +99,12 @@ export default function NewEntryModal({ isOpen, onClose }) {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    {error && (
+                        <div className="bg-red-50 text-red-500 p-3 rounded-lg">
+                            {error}
+                        </div>
+                    )}
+
                     <div>
                         <label htmlFor="title" className="block text-sm font-medium mb-1">
                             Title
@@ -223,14 +263,16 @@ export default function NewEntryModal({ isOpen, onClose }) {
                             type="button"
                             onClick={onClose}
                             className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                            disabled={isSubmitting}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={isSubmitting}
                         >
-                            Save Entry
+                            {isSubmitting ? 'Saving...' : 'Save Entry'}
                         </button>
                     </div>
                 </form>
