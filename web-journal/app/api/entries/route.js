@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/connectMongo';
 import { Storage } from '@google-cloud/storage';
+import { getServerSession } from 'next-auth';
 
 const storage = new Storage({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -11,6 +12,17 @@ const bucket = storage.bucket(process.env.GOOGLE_CLOUD_BUCKET_NAME);
 
 export async function POST(request) {
   try {
+    const session = await getServerSession();
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const user = session.user;
+
     const formData = await request.formData();
     const title = formData.get('title');
     const content = formData.get('content');
@@ -31,7 +43,7 @@ export async function POST(request) {
 
         return {
           url: `https://storage.googleapis.com/${bucket.name}/${filename}`,
-          filename: filename,
+          filename,
           contentType: photo.type,
         };
       })
@@ -39,11 +51,17 @@ export async function POST(request) {
 
     const client = await clientPromise;
     const db = client.db("web_journal");
+
     const entry = {
       title,
       content,
       spotifyUrl,
       photos: photoUrls,
+      user: {
+        name: user.name,
+        email: user.email,
+        image: user.image,
+      },
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -64,4 +82,4 @@ export async function POST(request) {
       { status: 500 }
     );
   }
-} 
+}
