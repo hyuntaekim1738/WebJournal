@@ -57,11 +57,7 @@ export async function POST(request) {
       content,
       spotifyUrl,
       photos: photoUrls,
-      user: {
-        name: user.name,
-        email: user.email,
-        image: user.image,
-      },
+      user: {email:user.email},
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -82,4 +78,55 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+}
+
+export async function GET() {
+  try {
+    const session = await getServerSession();
+
+    if (!session || !session.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const client = await clientPromise;
+    const db = client.db('web_journal');
+
+    const entries = await db
+      .collection('entries')
+      .find({ 'user.email': session.user.email })
+      .sort({ updatedAt: -1 })
+      .toArray();
+    for (const entry of entries) {
+      entry.photos = await generateSignedUrls(entry.photos);
+    }
+      
+    return NextResponse.json({
+      success: true,
+      entries,
+    });
+  } catch (error) {
+    console.error('Error fetching user entries:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch entries' },
+      { status: 500 }
+    );
+  }
+}
+
+async function generateSignedUrls(photoList) {
+  return await Promise.all(photoList.map(async (photo) => {
+    const file = storage.bucket(process.env.GOOGLE_CLOUD_BUCKET_NAME).file(photo.filename);
+    const [url] = await file.getSignedUrl({
+      action: 'read',
+      expires: Date.now() + 15 * 60 * 1000,
+    });
+
+    return {
+      ...photo,
+      signedUrl: url,
+    };
+  }));
 }

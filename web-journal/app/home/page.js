@@ -1,23 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NewEntryModal from '../components/NewEntryModal';
-
+import EntryCard from '../components/EntryCard';
 export default function HomePage() {
   const filterOptions = ['Week', 'Month', 'Year', 'All'];
   const [filter, setFilter] = useState('Week');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [entries, setEntries] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const entries = []; // this is a placeholder
+  const fetchEntries = async () => {
+    try {
+      const res = await fetch('/api/entries');
+      const data = await res.json();
 
-  // calendar and filter toggle are mutually exclusive; you can't have both filters active at once
+      if (data.success) {
+        setEntries(data.entries);
+      } else {
+        console.error('Failed to fetch entries:', data.error);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+
+    fetchEntries();
+  }, []);
+
   const handleFilterClick = (option) => {
     setFilter(option);
     setStartDate('');
     setEndDate('');
   };
+
   const handleStartDateChange = (value) => {
     setStartDate(value);
     setFilter('');
@@ -43,6 +65,9 @@ export default function HomePage() {
       <NewEntryModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onEntryAdded={() => {
+          fetchEntries();
+        }}
       />
 
       <div className="flex flex-wrap gap-2">
@@ -79,20 +104,21 @@ export default function HomePage() {
       </div>
 
       <div className="mt-6 border rounded-xl p-6 text-center text-gray-300">
-        {entries.length === 0 ? (
+        {loading ? (
+          <p className="text-lg">Loading entries…</p>
+        ) : entries.length === 0 ? (
           <div>
             <p className="text-lg">You have no journal entries yet.</p>
             <p className="text-sm mt-1">Click "Write New Entry" to get started!</p>
           </div>
         ) : (
-          <ul>
+          <ul className="space-y-2">
             {entries.map(entry => (
-              <li key={entry.id}>{entry.title}</li>
+              <EntryCard key={entry._id} entry={entry} />
             ))}
           </ul>
         )}
       </div>
     </main>
-  )
+  );
 }
-

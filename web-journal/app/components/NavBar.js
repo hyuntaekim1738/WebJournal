@@ -8,7 +8,7 @@ export default function NavBar() {
   const userFirstName = session?.user?.name?.split(' ')[0];
 
   return (
-    <nav className="fixed top-0 left-0 w-full py-6 z-50 border-b-2 border-b-neutral-100">
+    <nav className="fixed top-0 left-0 w-full py-6 z-50 border-b-2 bg-[var(--background)] border-b-neutral-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 whitespace-nowrap">
         <div className="flex justify-between items-center lg:space-x-8">
           {session ? (<Link href="/home" className="sm:text-xl lg:text-2xl font-bold hover:text-blue-500 transition duration-150">

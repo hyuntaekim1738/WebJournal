@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { searchSpotifyTracks } from '../lib/spotify';
 
-export default function NewEntryModal({ isOpen, onClose }) {
+export default function NewEntryModal({ isOpen, onClose, onEntryAdded }) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [photos, setPhotos] = useState([]);
@@ -49,6 +49,7 @@ export default function NewEntryModal({ isOpen, onClose }) {
             setPhotos([]);
             setSpotifyUrl('');
             setSelectedTrack(null);
+            onEntryAdded();
             onClose();
         } catch (error) {
             console.error('Error submitting entry:', error);
@@ -128,7 +129,7 @@ export default function NewEntryModal({ isOpen, onClose }) {
                             value={content}
                             onChange={(e) => {
                                 setContent(e.target.value);
-                                e.target.style.height = 'auto'; 
+                                e.target.style.height = 'auto';
                                 e.target.style.height = `${e.target.scrollHeight}px`;
                             }}
                             className="w-full p-2 border rounded-lg bg-[var(--foreground)] text-[var(--background)] resize-none overflow-hidden"
@@ -195,7 +196,7 @@ export default function NewEntryModal({ isOpen, onClose }) {
                                 placeholder="Search for a song..."
                                 className="w-full p-2 border rounded-lg bg-[var(--foreground)] text-[var(--background)]"
                             />
-                            
+
                             {isSearching && (
                                 <div className="text-center py-2">
                                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto"></div>
@@ -205,55 +206,46 @@ export default function NewEntryModal({ isOpen, onClose }) {
                             {searchResults.length > 0 && (
                                 <div className="border rounded-lg bg-[var(--foreground)] max-h-60 overflow-y-auto">
                                     {searchResults.map((track) => (
-                                        <button
-                                            key={track.id}
-                                            onClick={() => handleTrackSelect(track)}
-                                            className="w-full p-2 hover:bg-gray-100 flex items-center gap-3 text-left"
-                                        >
-                                            {track.image && (
-                                                <img
-                                                    src={track.image}
-                                                    alt={track.name}
-                                                    className="w-12 h-12 object-cover rounded"
-                                                />
-                                            )}
-                                            <div>
-                                                <div className="font-medium text-[var(--background)]">{track.name}</div>
-                                                <div className="text-sm text-gray-600">
-                                                    {track.artist} • {track.album}
-                                                </div>
-                                            </div>
-                                        </button>
+                                        <div className="w-full border rounded-md overflow-hidden flex" key={track.id}>
+                                            <iframe
+                                                src={`https://open.spotify.com/embed/track/${track.url.split('/track/')[1]?.split('?')[0]}`}
+                                                width="100%"
+                                                height="80"
+                                                allow="encrypted-media"
+                                                className="block w-4/5"
+                                            />
+                                            <button
+                                                onClick={() => handleTrackSelect(track)}
+                                                className="w-1/5 p-2 hover:bg-blue-500 flex items-center justify-center text-left bg-[var(--background)] border-l"
+                                            >
+                                                Select Track
+                                            </button>
+                                        </div>
                                     ))}
                                 </div>
                             )}
 
                             {selectedTrack && (
-                                <div className="border rounded-lg p-3 bg-[var(--foreground)] flex items-center gap-3">
-                                    {selectedTrack.image && (
-                                        <img
-                                            src={selectedTrack.image}
-                                            alt={selectedTrack.name}
-                                            className="w-12 h-12 object-cover rounded"
-                                        />
-                                    )}
-                                    <div className="flex-1">
-                                        <div className="font-medium text-[var(--background)]">{selectedTrack.name}</div>
-                                        <div className="text-sm text-gray-600">
-                                            {selectedTrack.artist} • {selectedTrack.album}
-                                        </div>
-                                    </div>
+                                <div className="w-full border rounded-md overflow-hidden flex">
+                                    <iframe
+                                        src={`https://open.spotify.com/embed/track/${selectedTrack.url.split('/track/')[1]?.split('?')[0]}`}
+                                        width="100%"
+                                        height="80"
+                                        allow="encrypted-media"
+                                        className="block w-[95%]"
+                                    />
                                     <button
                                         type="button"
                                         onClick={() => {
                                             setSelectedTrack(null);
                                             setSpotifyUrl('');
                                         }}
-                                        className="text-gray-500 hover:text-gray-700"
+                                        className="w-[5%] text-gray-500 hover:text-gray-700 flex items-center justify-center"
                                     >
                                         ✕
                                     </button>
                                 </div>
+
                             )}
                         </div>
                     </div>
@@ -262,7 +254,7 @@ export default function NewEntryModal({ isOpen, onClose }) {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                            className="px-4 py-2 border rounded-lg hover:bg-gray-500"
                             disabled={isSubmitting}
                         >
                             Cancel
