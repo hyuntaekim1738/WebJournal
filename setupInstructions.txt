@@ -1,5 +1,5 @@
 Follow these instructions to begin collaborating.
-1. Once you have shared GitHub, google, and MongoDB accounts, clone the repo
+1. Once you have shared GitHub, google, Spotify, and MongoDB accounts, clone the repo
 2. Run command " cd web-journal "
 3. Run " npm install "
 4. Run command " touch .env.local "
@@ -9,6 +9,8 @@ GOOGLE_ID=
 GOOGLE_SECRET=
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=
+NEXT_PUBLIC_SPOTIFY_CLIENT_ID=
+NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET=
 6. Go to MongoDB Atlas and navigate to the project "WebJournal".
     On the side there should be a tab that says "Database Access".
     Click "Add New Database User" and come up with a username, password, and role.
@@ -22,5 +24,7 @@ NEXTAUTH_SECRET=
     copy paste the client secret into GOOGLE_SECRET=<client_secret>.
 8. Run command " openssl rand -base64 32 ". Copy paste the terminal output into the .env.local file 
     in NEXTAUTH_SECRET=<output>.
+9. Go to spotify development, select webJournal and copy paste the client ID and client secret into corresponding fields 
+    of .env.local
 9. Make sure you are in the web-journal directory. Run " npm run dev ".
 10. Go to GitHub, assign to yourself the issue you'd like to work on, create and checkout the corresponding branch, and code.
