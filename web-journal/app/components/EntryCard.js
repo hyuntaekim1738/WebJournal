@@ -79,7 +79,7 @@ export default function EntryCard({ entry }) {
           </p>
         </div>
         <div className="relative w-6 flex-shrink-0 flex justify-end" ref={menuRef}>
-          <MoreVertical onClick={toggleMenu} className="cursor-pointer" />
+          <MoreVertical onClick={toggleMenu} className="cursor-pointer text-[var(--background)]" />
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md z-10">
               <button className="w-full px-4 py-2 text-left text-sm text-[var(--background)] hover:bg-gray-100" onClick={(e) => handleEdit(e)}>

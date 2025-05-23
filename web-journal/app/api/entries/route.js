@@ -97,7 +97,7 @@ export async function GET() {
     const entries = await db
       .collection('entries')
       .find({ 'user.email': session.user.email })
-      .sort({ updatedAt: -1 })
+      .sort({ createdAt: -1 })
       .toArray();
     for (const entry of entries) {
       entry.photos = await generateSignedUrls(entry.photos);
