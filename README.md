@@ -1,11 +1,12 @@
 # WebJournal
 
 ## **Project Overview**
-This is a **journaling app**. Intended features of MVP include:
+This is a **journaling app**. Features include:
 - Making journal entries.
 - Reviewing past entries.
 - Allowing Photo Uploads.
 - Having Spotify songs linked to your entries that describe your day.
+- Entries color coded by mood.
 ---
 
 ## **Tech Stack**
@@ -14,7 +15,7 @@ This is a **journaling app**. Intended features of MVP include:
 | **Frontend** | Next.js, Tailwind CSS |
 | **Auth** | NextAuth, Google OAuth |
 | **Backend** | MongoDB, Google Cloud |
-| **APIs** | Spotify webAPI  |
+| **APIs** | Spotify webAPI, Gemini API (Google AI Studio)  |
 ---
 
 ## **Contribution Rules**
@@ -30,5 +31,4 @@ To make a change as a contributor:
 - Once the PR is approved, go to the issue tab and mark the issue as completed
 ---
 ## **Future ideas**
-- Integrating LLM to label and color code the mood of daily entries
 - Having a conversation mode: allowing users to make entries by having a conversation with the LLM and having the LLM either synthesize an entry from the conversation or directly save the conversation as an entry.

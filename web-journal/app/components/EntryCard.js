@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, MoreVertical } from 'lucide-react';
+import { moodColors } from '../lib/moodSetter';
 
 export default function EntryCard({ entry }) {
   const [expanded, setExpanded] = useState(false);
@@ -32,12 +33,12 @@ export default function EntryCard({ entry }) {
   }, [menuOpen]);
 
   const handleEdit = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     confirm('Edit clicked');
   }
 
   const handleDelete = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     confirm('Delete clicked');
   }
 
@@ -71,7 +72,20 @@ export default function EntryCard({ entry }) {
           {expanded ? <ChevronUp /> : <ChevronDown />}
         </div>
         <div className="flex-1 text-center">
-          <h2 className="text-xl font-semibold text-[var(--background)]">{entry.title}</h2>
+          <h2 className="text-xl font-semibold text-[var(--background)] flex justify-center items-center gap-2">
+            {entry.title}
+            {!expanded && entry.mood && (
+              <span
+                className="text-xs font-medium px-2 py-1 rounded-full"
+                style={{
+                  backgroundColor: moodColors[String(entry.mood).toLowerCase().trim()] || '#e0e0e0',
+                  color: '#fff',
+                }}
+              >
+                {String(entry.mood)}
+              </span>
+            )}
+          </h2>
           <p className="text-sm text-gray-500 mt-1">
             {entry.updatedAt !== entry.createdAt
               ? `Created: ${createdAt} · Updated: ${updatedAt}`

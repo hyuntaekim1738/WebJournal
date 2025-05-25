@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/connectMongo';
 import { Storage } from '@google-cloud/storage';
 import { getServerSession } from 'next-auth';
+import { analyzeMood } from '@/app/lib/moodSetter';
 
 const storage = new Storage({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -49,6 +50,7 @@ export async function POST(request) {
       })
     );
 
+    const entryMood = await analyzeMood(title + content);
     const client = await clientPromise;
     const db = client.db("web_journal");
 
@@ -60,6 +62,7 @@ export async function POST(request) {
       user: {email:user.email},
       createdAt: new Date(),
       updatedAt: new Date(),
+      mood: entryMood.trim(),
     };
 
     const result = await db.collection('entries').insertOne(entry);
