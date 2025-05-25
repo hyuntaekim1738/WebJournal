@@ -48,6 +48,7 @@ export default function NewEntryModal({ isOpen, onClose, onEntryAdded }) {
             setContent('');
             setPhotos([]);
             setSpotifyUrl('');
+            setSearchQuery('');
             setSelectedTrack(null);
             onEntryAdded();
             onClose();
