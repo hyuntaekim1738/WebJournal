@@ -23,18 +23,18 @@ export async function analyzeMood(journalEntry) {
 }
 
 export const moodColors = {
-    happy: "#FFD700",        // gold
-    sad: "#1E90FF",          // blue
-    angry: "#FF4500",        // reddish orangish
-    anxious: "#8A2BE2",      // bluish purple
-    calm: "#3CB371",         // green
-    excited: "#FF69B4",      // pink
-    bored: "#A9A9A9",        // gray
-    hopeful: "#00CED1",      // like a turquoisish
-    confused: "#9370DB",     // purple
-    lonely: "#708090",       // grayer
-    grateful: "#ADFF2F",     // greenish yellow
-    overwhelmed: "#DC143C",  // super red
-    relaxed: "#20B2AA",      // light green
-    tired: "#C0C0C0"         // silver
-};
+    happy: "#B8860B",        // dark goldenrod
+    sad: "#104E8B",          // dark dodger blue
+    angry: "#8B2500",        // dark red-orange
+    anxious: "#5D3FD3",      // darker blue-violet
+    calm: "#2E8B57",         // sea green
+    excited: "#C71585",      // medium violet red
+    bored: "#696969",        // dim gray
+    hopeful: "#008B8B",      // dark cyan
+    confused: "#6A5ACD",     // slate blue
+    lonely: "#2F4F4F",       // dark slate gray
+    grateful: "#6B8E23",     // olive drab
+    overwhelmed: "#8B0000",  // dark red
+    relaxed: "#008080",      // teal
+    tired: "#808080"         // gray
+  };  

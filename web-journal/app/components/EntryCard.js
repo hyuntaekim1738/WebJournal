@@ -74,7 +74,7 @@ export default function EntryCard({ entry }) {
         <div className="flex-1 text-center">
           <h2 className="text-xl font-semibold text-[var(--background)] flex justify-center items-center gap-2">
             {entry.title}
-            {!expanded && entry.mood && (
+            {entry.mood && (
               <span
                 className="text-xs font-medium px-2 py-1 rounded-full"
                 style={{
