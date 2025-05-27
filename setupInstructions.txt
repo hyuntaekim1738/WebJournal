@@ -17,11 +17,11 @@ GOOGLE_CLOUD_CREDENTIALS=
 GOOGLE_AI_KEY=
 6. Go to MongoDB Atlas and navigate to the project "WebJournal".
     On the side there should be a tab that says "Database Access".
-    Click "Add New Database User" and come up with a username, password, and role.
+    You should have been given a Mongo User by me.
     Then go to the "Clusters" tab, select the "Connect" button, select the 
     "Drivers" option, and copy paste the connection string into the .env.local file
     at MONGODB_URI=<connection_string>. Replace the <db_username>:<db_password> in the string
-    with the user that you just made for yourself.
+    with the user that I sent in the discord.
 7. Go to console.cloud.google.com, select the "WebJournal" project, and search "OAuth". 
     Select the option that says "Credentials". Under "OAuth 2.0 Client IDs", click "Web client 1".
     Under the "Additional Information" pane, copy paste the Client ID into GOOGLE_ID=<client_id> on .env.local,
