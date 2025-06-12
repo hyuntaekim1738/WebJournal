@@ -83,42 +83,6 @@ export async function POST(request) {
   }
 }
 
-export async function GET() {
-  try {
-    const session = await getServerSession();
-
-    if (!session || !session.user?.email) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    const client = await clientPromise;
-    const db = client.db('web_journal');
-
-    const entries = await db
-      .collection('entries')
-      .find({ 'user.email': session.user.email })
-      .sort({ createdAt: -1 })
-      .toArray();
-    for (const entry of entries) {
-      entry.photos = await generateSignedUrls(entry.photos);
-    }
-      
-    return NextResponse.json({
-      success: true,
-      entries,
-    });
-  } catch (error) {
-    console.error('Error fetching user entries:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch entries' },
-      { status: 500 }
-    );
-  }
-}
-
 async function generateSignedUrls(photoList) {
   return await Promise.all(photoList.map(async (photo) => {
     const file = storage.bucket(process.env.GOOGLE_CLOUD_BUCKET_NAME).file(photo.filename);
@@ -132,4 +96,59 @@ async function generateSignedUrls(photoList) {
       signedUrl: url,
     };
   }));
+}
+
+export async function GET(request) {
+  try {
+    const session = await getServerSession();
+
+    if (!session || !session.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+  const client = await clientPromise;
+  const db = client.db('web_journal');
+
+  const { searchParams } = new URL(request.url);
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
+  const query = { 'user.email': session.user.email };
+
+  if (startDate || endDate) {
+  query.createdAt = {};
+
+  if (startDate) {
+    query.createdAt.$gte = new Date(`${startDate}T00:00:00`);
+  }
+
+  if (endDate) {
+    query.createdAt.$lte = new Date(`${endDate}T23:59:59.999`);
+  }
+}
+
+    const entries = await db
+      .collection('entries')
+      .find(query)
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    for (const entry of entries) {
+      entry.photos = await generateSignedUrls(entry.photos);
+    }
+
+    return NextResponse.json({
+      success: true,
+      entries,
+    });
+  } catch (error) {
+    console.error('Error fetching user entries:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch entries' },
+      { status: 500 }
+    );
+  }
 }
