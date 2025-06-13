@@ -114,7 +114,7 @@ export default function HomePage() {
         ) : (
           <ul className="space-y-2">
             {entries.map(entry => (
-              <EntryCard key={entry._id} entry={entry} />
+              <EntryCard key={entry._id} entry={entry} onEntryDeleted={fetchEntries} />
             ))}
           </ul>
         )}

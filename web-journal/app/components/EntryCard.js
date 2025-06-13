@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, MoreVertical } from 'lucide-react';
 import { moodColors } from '../lib/moodSetter';
 
-export default function EntryCard({ entry }) {
+export default function EntryCard({ entry, onEntryDeleted }) {
   const [expanded, setExpanded] = useState(false);
   const [imageLoading, setImageLoading] = useState({});
   const [spotifyLoading, setSpotifyLoading] = useState(true);
@@ -37,9 +37,24 @@ export default function EntryCard({ entry }) {
     confirm('Edit clicked');
   }
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.stopPropagation();
-    confirm('Delete clicked');
+    if (!confirm('Are you sure you want to delete this entry?')) return;
+    try {
+      const res = await fetch('/api/entries', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entryId: entry._id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (onEntryDeleted) onEntryDeleted();
+      } else {
+        alert(data.error || 'Failed to delete entry');
+      }
+    } catch (err) {
+      alert('Failed to delete entry');
+    }
   }
 
   const toggleExpand = () => setExpanded(!expanded);

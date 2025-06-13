@@ -119,6 +119,68 @@ export async function GET() {
   }
 }
 
+export async function DELETE(request) {
+  try {
+    const session = await getServerSession();
+    if (!session || !session.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const { entryId } = await request.json();
+    if (!entryId) {
+      return NextResponse.json(
+        { success: false, error: 'Missing entryId' },
+        { status: 400 }
+      );
+    }
+
+    const client = await clientPromise;
+    const db = client.db('web_journal');
+    const entry = await db.collection('entries').findOne({
+      _id: typeof entryId === 'string'
+        ? new (await import('mongodb')).ObjectId(entryId)
+        : entryId,
+      'user.email': session.user.email,
+    });
+
+    if (!entry) {
+      return NextResponse.json(
+        { success: false, error: 'Entry not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete photos from Google Cloud Storage
+    if (entry.photos && Array.isArray(entry.photos)) {
+      await Promise.all(
+        entry.photos.map(async (photo) => {
+          try {
+            await bucket.file(photo.filename).delete();
+          } catch (err) {
+            // Ignore errors for missing files
+          }
+        })
+      );
+    }
+
+    await db.collection('entries').deleteOne({
+      _id: entry._id,
+      'user.email': session.user.email,
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting entry:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete entry' },
+      { status: 500 }
+    );
+  }
+}
+
 async function generateSignedUrls(photoList) {
   return await Promise.all(photoList.map(async (photo) => {
     const file = storage.bucket(process.env.GOOGLE_CLOUD_BUCKET_NAME).file(photo.filename);
