@@ -122,7 +122,7 @@ const handleEndDateChange = (value) => {
           type="date"
           value={startDate}
           onChange={e => handleStartDateChange(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded prefers-color-scheme:dark"
           max={endDate || undefined}
           disabled={filter !== 'Custom'}
         />
@@ -131,7 +131,7 @@ const handleEndDateChange = (value) => {
           type="date"
           value={endDate}
           onChange={e => handleEndDateChange(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded prefers-color-scheme:dark"
           min={startDate || undefined}
           disabled={filter !== 'Custom'}
         />
