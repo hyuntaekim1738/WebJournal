@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import NewEntryModal from '../components/NewEntryModal';
 import EntryCard from '../components/EntryCard';
 export default function HomePage() {
-  const filterOptions = ['Week', 'Month', 'Year', 'All'];
+  const filterOptions = ['Week', 'Month', 'Year', 'All', 'Custom'];
   const [filter, setFilter] = useState('Week');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -14,7 +14,11 @@ export default function HomePage() {
 
   const fetchEntries = async () => {
     try {
-      const res = await fetch('/api/entries');
+      const params = new URLSearchParams();
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
+
+      const res = await fetch(`/api/entries?${params.toString()}`);
       const data = await res.json();
 
       if (data.success) {
@@ -30,25 +34,52 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-
     fetchEntries();
-  }, []);
+  }, [filter, startDate, endDate]);
+
+  useEffect(() => {
+    if (filter && filter !== 'Custom') {
+      const now = new Date();
+      let fromDate = new Date();
+
+      switch (filter) {
+        case 'Week':
+          fromDate.setDate(now.getDate() - 7);
+          break;
+        case 'Month':
+          fromDate.setMonth(now.getMonth() - 1);
+          break;
+        case 'Year':
+          fromDate.setFullYear(now.getFullYear() - 1);
+          break;
+        case 'All':
+          setStartDate('');
+          setEndDate('');
+          return;
+      }
+
+      setStartDate(fromDate.toISOString().split('T')[0]);
+      setEndDate(now.toISOString().split('T')[0]);
+    }
+  }, [filter]);
 
   const handleFilterClick = (option) => {
     setFilter(option);
-    setStartDate('');
-    setEndDate('');
+    if (option !== 'Custom') {
+      setStartDate('');
+      setEndDate('');
+    }
   };
 
   const handleStartDateChange = (value) => {
-    setStartDate(value);
-    setFilter('');
-  };
+  setStartDate(value);
+  if (filter !== 'Custom') setFilter('Custom');
+};
 
-  const handleEndDateChange = (value) => {
-    setEndDate(value);
-    setFilter('');
-  };
+const handleEndDateChange = (value) => {
+  setEndDate(value);
+  if (filter !== 'Custom') setFilter('Custom');
+};
 
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">
@@ -85,23 +116,27 @@ export default function HomePage() {
         ))}
       </div>
 
+    {filter !== 'All' && (
       <div className="flex gap-4 items-center">
         <input
           type="date"
           value={startDate}
           onChange={e => handleStartDateChange(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded prefers-color-scheme:dark"
           max={endDate || undefined}
+          disabled={filter !== 'Custom'}
         />
         <span>to</span>
         <input
           type="date"
           value={endDate}
           onChange={e => handleEndDateChange(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded prefers-color-scheme:dark"
           min={startDate || undefined}
+          disabled={filter !== 'Custom'}
         />
       </div>
+    )}
 
       <div className="mt-6 border rounded-xl p-6 text-center text-gray-300">
         {loading ? (
